@@ -1,5 +1,9 @@
 # OnceHuman工具集 Makefile
 
+# Go环境设置
+GOPATH := $(shell go env GOPATH)
+export PATH := $(GOPATH)/bin:$(PATH)
+
 # 变量定义
 RELEASE_DIR := release
 BACKEND_DIR := backend

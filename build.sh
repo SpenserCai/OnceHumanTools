@@ -1,6 +1,18 @@
 #!/bin/bash
+###
+ # @Author: SpenserCai
+ # @Date: 2025-06-23 16:38:14
+ # @version: 
+ # @LastEditors: SpenserCai
+ # @LastEditTime: 2025-06-23 16:53:32
+ # @Description: file content
+### 
 
 # 快速构建脚本
+
+# 设置 Go 环境变量
+export GOPATH=$(go env GOPATH)
+export PATH="$GOPATH/bin:$PATH"
 
 echo "OnceHuman工具集 - 快速构建"
 echo ""

@@ -2,6 +2,10 @@
 
 # 后端服务启动脚本
 
+# 设置 Go 环境变量
+export GOPATH=$(go env GOPATH 2>/dev/null || echo "$HOME/go")
+export PATH="$GOPATH/bin:$PATH"
+
 # 设置工作目录
 cd "$(dirname "$0")"
 

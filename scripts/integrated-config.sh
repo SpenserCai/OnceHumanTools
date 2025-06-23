@@ -2,6 +2,10 @@
 
 # OnceHuman工具集 - 集成模式配置脚本
 
+# 设置 Go 环境变量
+export GOPATH=$(go env GOPATH 2>/dev/null || echo "$HOME/go")
+export PATH="$GOPATH/bin:$PATH"
+
 echo "================================"
 echo "OnceHuman工具集 - 集成模式"
 echo "================================"

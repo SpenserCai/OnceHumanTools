@@ -4,6 +4,10 @@
 
 set -e
 
+# 设置 Go 环境变量
+export GOPATH=$(go env GOPATH)
+export PATH="$GOPATH/bin:$PATH"
+
 # 颜色定义
 RED='\033[0;31m'
 GREEN='\033[0;32m'

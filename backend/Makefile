@@ -1,5 +1,9 @@
 .PHONY: build run test clean swagger generate-swagger
 
+# Go环境设置
+GOPATH := $(shell go env GOPATH)
+export PATH := $(GOPATH)/bin:$(PATH)
+
 # 构建可执行文件
 build:
 	go build -o bin/server cmd/server/main.go
