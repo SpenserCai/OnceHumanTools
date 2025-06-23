@@ -1,14 +1,21 @@
+/*
+ * @Author: SpenserCai
+ * @Date: 2025-06-23 16:12:47
+ * @version:
+ * @LastEditors: SpenserCai
+ * @LastEditTime: 2025-06-23 16:15:02
+ * @Description: file content
+ */
 package main
 
 import (
 	"log"
 
 	"github.com/go-openapi/loads"
-	"github.com/go-openapi/runtime/middleware"
 	"github.com/jessevdk/go-flags"
 
-	"github.com/oncehuman/tools/restapi"
-	"github.com/oncehuman/tools/restapi/operations"
+	"github.com/SpenserCai/OnceHumanTools/backend/restapi"
+	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations"
 )
 
 func main() {
@@ -24,7 +31,7 @@ func main() {
 	parser := flags.NewParser(server, flags.Default)
 	parser.ShortDescription = "OnceHuman工具集API"
 	parser.LongDescription = "提供OnceHuman游戏相关的计算工具API"
-	
+
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {
 		_, err := parser.AddGroup(optsGroup.ShortDescription, optsGroup.LongDescription, optsGroup.Options)
