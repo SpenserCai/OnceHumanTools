@@ -28,4 +28,5 @@ echo "端口: $PORT"
 echo "API文档: http://localhost:$PORT/docs"
 
 # 启动服务
-./server --port $PORT
+echo "使用 HTTP 模式启动服务（开发环境）..."
+./server --scheme=http --host=0.0.0.0 --port $PORT

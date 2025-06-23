@@ -18,9 +18,18 @@ test:
 
 # 清理生成的文件
 clean:
+	@# 备份重要的配置文件
+	@if [ -f restapi/configure_oncehuman_tools.go ]; then \
+		cp restapi/configure_oncehuman_tools.go configure_oncehuman_tools.go.backup; \
+	fi
 	rm -rf bin/
 	rm -rf models/
 	rm -rf restapi/
+	@# 恢复配置文件
+	@if [ -f configure_oncehuman_tools.go.backup ]; then \
+		mkdir -p restapi; \
+		mv configure_oncehuman_tools.go.backup restapi/configure_oncehuman_tools.go; \
+	fi
 
 # 生成swagger代码
 generate-swagger:

@@ -1,3 +1,11 @@
+/*
+ * @Author: SpenserCai
+ * @Date: 2025-06-23 17:50:55
+ * @version:
+ * @LastEditors: SpenserCai
+ * @LastEditTime: 2025-06-23 18:00:09
+ * @Description: file content
+ */
 // This file is safe to edit. Once it exists it will not be overwritten
 
 package restapi
@@ -8,12 +16,13 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
 
+	"github.com/SpenserCai/OnceHumanTools/backend/internal/handlers"
 	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations"
 	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations/mod"
 	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations/system"
 	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations/tools"
+	// 导入我们的处理器
 )
 
 //go:generate swagger generate server --target ../../backend --name OncehumanTools --spec ../api/swagger.yaml --principal interface{} --exclude-main
@@ -40,31 +49,21 @@ func configureAPI(api *operations.OncehumanToolsAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.ModCalculateAffixProbabilityHandler == nil {
-		api.ModCalculateAffixProbabilityHandler = mod.CalculateAffixProbabilityHandlerFunc(func(params mod.CalculateAffixProbabilityParams) middleware.Responder {
-			return middleware.NotImplemented("operation mod.CalculateAffixProbability has not yet been implemented")
-		})
-	}
-	if api.ModCalculateStrengthenProbabilityHandler == nil {
-		api.ModCalculateStrengthenProbabilityHandler = mod.CalculateStrengthenProbabilityHandlerFunc(func(params mod.CalculateStrengthenProbabilityParams) middleware.Responder {
-			return middleware.NotImplemented("operation mod.CalculateStrengthenProbability has not yet been implemented")
-		})
-	}
-	if api.SystemHealthCheckHandler == nil {
-		api.SystemHealthCheckHandler = system.HealthCheckHandlerFunc(func(params system.HealthCheckParams) middleware.Responder {
-			return middleware.NotImplemented("operation system.HealthCheck has not yet been implemented")
-		})
-	}
-	if api.ModListAffixesHandler == nil {
-		api.ModListAffixesHandler = mod.ListAffixesHandlerFunc(func(params mod.ListAffixesParams) middleware.Responder {
-			return middleware.NotImplemented("operation mod.ListAffixes has not yet been implemented")
-		})
-	}
-	if api.ToolsListToolsHandler == nil {
-		api.ToolsListToolsHandler = tools.ListToolsHandlerFunc(func(params tools.ListToolsParams) middleware.Responder {
-			return middleware.NotImplemented("operation tools.ListTools has not yet been implemented")
-		})
-	}
+	// 创建处理器实例
+	systemHandler := handlers.NewSystemHandler()
+	toolsHandler := handlers.NewToolsHandler()
+	modHandler := handlers.NewModHandler()
+
+	// 连接模组相关处理器
+	api.ModCalculateAffixProbabilityHandler = mod.CalculateAffixProbabilityHandlerFunc(modHandler.CalculateAffixProbability)
+	api.ModCalculateStrengthenProbabilityHandler = mod.CalculateStrengthenProbabilityHandlerFunc(modHandler.CalculateStrengthenProbability)
+	api.ModListAffixesHandler = mod.ListAffixesHandlerFunc(modHandler.ListAffixes)
+
+	// 连接系统处理器
+	api.SystemHealthCheckHandler = system.HealthCheckHandlerFunc(systemHandler.HealthCheck)
+
+	// 连接工具处理器
+	api.ToolsListToolsHandler = tools.ListToolsHandlerFunc(toolsHandler.ListTools)
 
 	api.PreServerShutdown = func() {}
 
