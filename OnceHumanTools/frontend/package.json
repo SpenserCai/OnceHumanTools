@@ -1,0 +1,37 @@
+{
+  "name": "oncehuman-tools-frontend",
+  "version": "1.0.0",
+  "description": "OnceHuman工具集前端",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
+    "pinia": "^2.1.7",
+    "axios": "^1.6.7",
+    "@vueuse/core": "^10.9.0",
+    "element-plus": "^2.5.6",
+    "@element-plus/icons-vue": "^2.3.1",
+    "chart.js": "^4.4.1",
+    "vue-chartjs": "^5.3.0",
+    "gsap": "^3.12.5",
+    "three": "^0.161.0",
+    "@vueuse/motion": "^2.0.0",
+    "particles.vue3": "^2.12.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.1.4",
+    "sass": "^1.71.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.22.0",
+    "unplugin-auto-import": "^0.17.5",
+    "unplugin-vue-components": "^0.26.0",
+    "@types/three": "^0.161.2"
+  }
+}

@@ -1,0 +1,60 @@
+// 主题色彩
+$primary-color: #00ff88;
+$secondary-color: #00ccff;
+$accent-color: #ff00ff;
+$warning-color: #ffaa00;
+$danger-color: #ff0044;
+$success-color: #00ff88;
+
+// 背景色
+$bg-primary: #000000;
+$bg-secondary: #0a0a0a;
+$bg-tertiary: #111111;
+$bg-card: rgba(15, 15, 15, 0.8);
+$bg-hover: rgba(0, 255, 136, 0.1);
+
+// 文字色彩
+$text-primary: #ffffff;
+$text-secondary: #cccccc;
+$text-muted: #888888;
+$text-highlight: $primary-color;
+
+// 边框
+$border-color: rgba(0, 255, 136, 0.3);
+$border-hover: rgba(0, 255, 136, 0.6);
+
+// 阴影
+$shadow-sm: 0 2px 4px rgba(0, 255, 136, 0.1);
+$shadow-md: 0 4px 8px rgba(0, 255, 136, 0.2);
+$shadow-lg: 0 8px 16px rgba(0, 255, 136, 0.3);
+$shadow-glow: 0 0 20px rgba(0, 255, 136, 0.5);
+
+// 动画时长
+$transition-fast: 0.2s;
+$transition-normal: 0.3s;
+$transition-slow: 0.5s;
+
+// 字体
+$font-primary: 'Noto Sans SC', sans-serif;
+$font-tech: 'Orbitron', monospace;
+
+// 间距
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// 圆角
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+$radius-xl: 16px;
+
+// Z-index层级
+$z-particles: 1;
+$z-content: 10;
+$z-header: 100;
+$z-modal: 1000;
+$z-tooltip: 2000;

@@ -2,58 +2,56 @@ package main
 
 import (
 	"log"
-	"os"
 
-	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
-	"github.com/oncehuman/tools/api"
-	"github.com/oncehuman/tools/config"
-	"github.com/oncehuman/tools/internal/middleware"
-	"github.com/sirupsen/logrus"
+	"github.com/go-openapi/loads"
+	"github.com/go-openapi/runtime/middleware"
+	"github.com/jessevdk/go-flags"
+
+	"github.com/oncehuman/tools/restapi"
+	"github.com/oncehuman/tools/restapi/operations"
 )
 
-// @title OnceHuman Tools API
-// @version 1.0
-// @description OnceHuman游戏工具集API服务
-// @host localhost:8080
-// @BasePath /api/v1
 func main() {
-	// 加载环境变量
-	if err := godotenv.Load(); err != nil {
-		logrus.Warn("未找到.env文件，使用系统环境变量")
+	swaggerSpec, err := loads.Embedded(restapi.SwaggerJSON, restapi.FlatSwaggerJSON)
+	if err != nil {
+		log.Fatalln(err)
 	}
 
-	// 初始化配置
-	cfg := config.Load()
+	api := operations.NewOncehumanToolsAPI(swaggerSpec)
+	server := restapi.NewServer(api)
+	defer server.Shutdown()
 
-	// 设置日志级别
-	if cfg.Debug {
-		logrus.SetLevel(logrus.DebugLevel)
-		gin.SetMode(gin.DebugMode)
-	} else {
-		logrus.SetLevel(logrus.InfoLevel)
-		gin.SetMode(gin.ReleaseMode)
-	}
-
-	// 创建Gin引擎
-	r := gin.New()
+	parser := flags.NewParser(server, flags.Default)
+	parser.ShortDescription = "OnceHuman工具集API"
+	parser.LongDescription = "提供OnceHuman游戏相关的计算工具API"
 	
-	// 添加中间件
-	r.Use(gin.Recovery())
-	r.Use(middleware.Logger())
-	r.Use(middleware.CORS())
-
-	// 注册API路由
-	api.RegisterRoutes(r, cfg)
-
-	// 启动服务器
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	server.ConfigureFlags()
+	for _, optsGroup := range api.CommandLineOptionsGroups {
+		_, err := parser.AddGroup(optsGroup.ShortDescription, optsGroup.LongDescription, optsGroup.Options)
+		if err != nil {
+			log.Fatalln(err)
+		}
 	}
 
-	logrus.Infof("服务器启动在端口 %s", port)
-	if err := r.Run(":" + port); err != nil {
-		log.Fatalf("服务器启动失败: %v", err)
+	if _, err := parser.Parse(); err != nil {
+		code := 1
+		if fe, ok := err.(*flags.Error); ok {
+			if fe.Type == flags.ErrHelp {
+				code = 0
+			}
+		}
+		log.Fatalf("Error parsing flags: %v (code: %d)", err, code)
+	}
+
+	server.ConfigureAPI()
+
+	// 启动前打印信息
+	log.Printf("Starting OnceHuman Tools API Server...")
+	log.Printf("API Version: 1.0.0")
+	log.Printf("Listening on %s:%d", server.Host, server.Port)
+	log.Printf("Swagger UI available at: http://%s:%d/docs", server.Host, server.Port)
+
+	if err := server.Serve(); err != nil {
+		log.Fatalln(err)
 	}
 }
