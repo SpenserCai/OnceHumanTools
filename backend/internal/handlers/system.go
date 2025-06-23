@@ -5,9 +5,9 @@ import (
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
-	
-	"github.com/oncehuman/tools/models"
-	"github.com/oncehuman/tools/restapi/operations/system"
+
+	"github.com/SpenserCai/OnceHumanTools/backend/models"
+	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations/system"
 )
 
 // SystemHandler 系统处理器
@@ -23,12 +23,12 @@ func (h *SystemHandler) HealthCheck(params system.HealthCheckParams) middleware.
 	status := "ok"
 	version := "1.0.0"
 	timestamp := strfmt.DateTime(time.Now())
-	
+
 	response := &models.HealthResponse{
 		Status:    &status,
 		Timestamp: &timestamp,
 		Version:   version,
 	}
-	
+
 	return system.NewHealthCheckOK().WithPayload(response)
 }

@@ -1,14 +1,14 @@
-module github.com/oncehuman/tools/bot
+module github.com/SpenserCai/OnceHumanTools/bot
 
 go 1.21
 
 require (
 	github.com/bwmarrin/discordgo v0.27.1
 	github.com/joho/godotenv v1.5.1
-	github.com/oncehuman/tools v0.0.0
+	github.com/SpenserCai/OnceHumanTools/backend v0.0.0
 )
 
-replace github.com/oncehuman/tools => ../backend
+replace github.com/SpenserCai/OnceHumanTools/backend => ../backend
 
 require (
 	github.com/gorilla/websocket v1.5.1 // indirect

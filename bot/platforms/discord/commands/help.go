@@ -2,7 +2,7 @@ package commands
 
 import (
 	"github.com/bwmarrin/discordgo"
-	"github.com/oncehuman/tools/bot/platforms/discord"
+	"github.com/SpenserCai/OnceHumanTools/bot/platforms/discord"
 )
 
 // CreateHelpCommand 创建帮助命令

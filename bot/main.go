@@ -7,10 +7,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/SpenserCai/OnceHumanTools/bot/core"
+	"github.com/SpenserCai/OnceHumanTools/bot/platforms/discord"
+	"github.com/SpenserCai/OnceHumanTools/bot/platforms/discord/commands"
 	"github.com/joho/godotenv"
-	"github.com/oncehuman/tools/bot/core"
-	"github.com/oncehuman/tools/bot/platforms/discord"
-	"github.com/oncehuman/tools/bot/platforms/discord/commands"
 )
 
 func main() {
@@ -51,7 +51,7 @@ func main() {
 	// 等待中断信号
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
-	
+
 	select {
 	case <-sigChan:
 		log.Println("收到中断信号，正在停止机器人...")

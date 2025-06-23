@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/SpenserCai/OnceHumanTools/backend/internal/services"
+	"github.com/SpenserCai/OnceHumanTools/bot/platforms/discord"
 	"github.com/bwmarrin/discordgo"
-	"github.com/oncehuman/tools/bot/platforms/discord"
-	"github.com/oncehuman/tools/internal/services"
 )
 
 // CreateStrengthenCommand 创建强化概率计算命令
@@ -102,7 +102,7 @@ func CreateStrengthenCommand() *discord.SlashCommand {
 // handleStrengthenCommand 处理强化概率计算命令
 func handleStrengthenCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	resp := discord.CreateResponse(s, i)
-	
+
 	// 延迟响应
 	if err := resp.Defer(); err != nil {
 		return
@@ -123,7 +123,7 @@ func handleStrengthenCommand(s *discordgo.Session, i *discordgo.InteractionCreat
 func handleSingleStrengthen(resp *discord.InteractionResponse, options []*discordgo.ApplicationCommandInteractionDataOption) {
 	// 解析参数
 	var affixID, currentLevel, targetLevel, slotCount, tries int
-	
+
 	for _, opt := range options {
 		switch opt.Name {
 		case "affix_id":
@@ -168,7 +168,7 @@ func handleMultiStrengthen(resp *discord.InteractionResponse, options []*discord
 	// 解析参数
 	var targetsStr string
 	var slotCount, tries int
-	
+
 	for _, opt := range options {
 		switch opt.Name {
 		case "targets":
@@ -269,7 +269,7 @@ func buildSingleStrengthenResultEmbed(result *services.StrengthenProbabilityResu
 	// 构建路径描述
 	var pathDesc []string
 	for _, step := range target.Path {
-		pathDesc = append(pathDesc, fmt.Sprintf("Lv%d → Lv%d (%.2f%%)", 
+		pathDesc = append(pathDesc, fmt.Sprintf("Lv%d → Lv%d (%.2f%%)",
 			step.FromLevel, step.ToLevel, step.Probability*100))
 	}
 
@@ -279,8 +279,8 @@ func buildSingleStrengthenResultEmbed(result *services.StrengthenProbabilityResu
 		Color:       color,
 		Fields: []*discordgo.MessageEmbedField{
 			{
-				Name:   "📊 基础信息",
-				Value:  fmt.Sprintf("当前等级: Lv%d\n目标等级: Lv%d\n词条数量: %d\n强化次数: %d",
+				Name: "📊 基础信息",
+				Value: fmt.Sprintf("当前等级: Lv%d\n目标等级: Lv%d\n词条数量: %d\n强化次数: %d",
 					target.CurrentLevel, target.TargetLevel, slotCount, tries),
 				Inline: true,
 			},

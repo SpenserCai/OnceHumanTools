@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/SpenserCai/OnceHumanTools/backend/internal/services"
+	"github.com/SpenserCai/OnceHumanTools/bot/platforms/discord"
 	"github.com/bwmarrin/discordgo"
-	"github.com/oncehuman/tools/bot/platforms/discord"
-	"github.com/oncehuman/tools/internal/services"
 )
 
 // CreateAffixCommand 创建词条概率计算命令
@@ -45,7 +45,7 @@ func CreateAffixCommand() *discord.SlashCommand {
 // handleAffixCommand 处理词条概率计算命令
 func handleAffixCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	resp := discord.CreateResponse(s, i)
-	
+
 	// 延迟响应，因为计算可能需要时间
 	if err := resp.Defer(); err != nil {
 		return
@@ -56,7 +56,7 @@ func handleAffixCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	var slotCount int
 	var targetStr string
 	showCombinations := false
-	
+
 	for _, opt := range options {
 		switch opt.Name {
 		case "slots":
@@ -96,7 +96,7 @@ func handleAffixCommand(s *discordgo.Session, i *discordgo.InteractionCreate) {
 func parseTargetIDs(str string) []int {
 	parts := strings.Split(str, ",")
 	var ids []int
-	
+
 	for _, part := range parts {
 		part = strings.TrimSpace(part)
 		var id int
@@ -104,7 +104,7 @@ func parseTargetIDs(str string) []int {
 			ids = append(ids, id)
 		}
 	}
-	
+
 	return ids
 }
 
@@ -186,7 +186,7 @@ func buildAffixResultEmbed(slotCount int, result *services.AffixProbabilityResul
 			}
 			comboStrs = append(comboStrs, fmt.Sprintf("%d. %s", i+1, strings.Join(names, " + ")))
 		}
-		
+
 		embed.Fields = append(embed.Fields, &discordgo.MessageEmbedField{
 			Name:   "📝 可能的组合",
 			Value:  strings.Join(comboStrs, "\n"),

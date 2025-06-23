@@ -1,4 +1,4 @@
-module github.com/oncehuman/tools
+module github.com/SpenserCai/OnceHumanTools/backend
 
 go 1.21
 

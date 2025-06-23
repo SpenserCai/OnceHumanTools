@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	
-	"github.com/oncehuman/tools/models"
-	"github.com/oncehuman/tools/restapi/operations/tools"
+
+	"github.com/SpenserCai/OnceHumanTools/backend/models"
+	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations/tools"
 )
 
 // ToolsHandler 工具处理器
@@ -34,15 +34,15 @@ func (h *ToolsHandler) ListTools(params tools.ListToolsParams) middleware.Respon
 			Icon:        "trending-up",
 		},
 	}
-	
+
 	// 获取分类
 	categories := []string{"mod", "weapon", "character"}
-	
+
 	response := &models.ToolsListResponse{
 		Tools:      toolList,
 		Categories: categories,
 	}
-	
+
 	return tools.NewListToolsOK().WithPayload(response)
 }
 

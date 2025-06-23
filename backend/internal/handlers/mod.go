@@ -2,23 +2,23 @@ package handlers
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	
-	"github.com/oncehuman/tools/models"
-	internalModels "github.com/oncehuman/tools/internal/models"
-	"github.com/oncehuman/tools/internal/services"
-	"github.com/oncehuman/tools/restapi/operations/mod"
+
+	internalModels "github.com/SpenserCai/OnceHumanTools/backend/internal/models"
+	"github.com/SpenserCai/OnceHumanTools/backend/internal/services"
+	"github.com/SpenserCai/OnceHumanTools/backend/models"
+	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations/mod"
 )
 
 // ModHandler 模组处理器
 type ModHandler struct {
-	affixService *services.AffixProbabilityService
+	affixService      *services.AffixProbabilityService
 	strengthenService *services.StrengthenProbabilityService
 }
 
 // NewModHandler 创建模组处理器
 func NewModHandler() *ModHandler {
 	return &ModHandler{
-		affixService: services.NewAffixProbabilityService(),
+		affixService:      services.NewAffixProbabilityService(),
 		strengthenService: services.NewStrengthenProbabilityService(),
 	}
 }
@@ -26,7 +26,7 @@ func NewModHandler() *ModHandler {
 // ListAffixes 获取词条列表
 func (h *ModHandler) ListAffixes(params mod.ListAffixesParams) middleware.Responder {
 	affixes := internalModels.GetAllAffixes()
-	
+
 	// 转换为API模型
 	affixList := make([]*models.Affix, 0, len(affixes))
 	for _, affix := range affixes {
@@ -39,13 +39,13 @@ func (h *ModHandler) ListAffixes(params mod.ListAffixesParams) middleware.Respon
 			Category:    category,
 		})
 	}
-	
+
 	total := int32(len(affixList))
 	response := &models.AffixListResponse{
 		Affixes: affixList,
 		Total:   total,
 	}
-	
+
 	return mod.NewListAffixesOK().WithPayload(response)
 }
 
@@ -57,15 +57,15 @@ func (h *ModHandler) CalculateAffixProbability(params mod.CalculateAffixProbabil
 	for i, id := range params.Body.TargetAffixIds {
 		targetAffixIDs[i] = int(id)
 	}
-	
+
 	showCombinations := false
 	if params.Body.ShowCombinations != nil {
 		showCombinations = *params.Body.ShowCombinations
 	}
-	
+
 	// 调用服务计算
 	result := h.affixService.CalculateProbability(slotCount, targetAffixIDs, showCombinations)
-	
+
 	// 检查错误
 	if result.Error != "" {
 		errorMsg := result.Error
@@ -75,14 +75,14 @@ func (h *ModHandler) CalculateAffixProbability(params mod.CalculateAffixProbabil
 			Message: &errorMsg,
 		})
 	}
-	
+
 	// 转换结果
 	slotCount32 := int32(result.SlotCount)
 	targetRange := make([]int32, len(result.TargetRange))
 	for i, id := range result.TargetRange {
 		targetRange[i] = int32(id)
 	}
-	
+
 	response := &models.AffixProbabilityResponse{
 		Probability:        &result.Probability,
 		ProbabilityPercent: &result.ProbabilityPercent,
@@ -91,7 +91,7 @@ func (h *ModHandler) CalculateAffixProbability(params mod.CalculateAffixProbabil
 		SlotCount:          slotCount32,
 		TargetRange:        targetRange,
 	}
-	
+
 	// 添加组合数据
 	if showCombinations && len(result.Combinations) > 0 {
 		combinations := make([][]int32, len(result.Combinations))
@@ -103,7 +103,7 @@ func (h *ModHandler) CalculateAffixProbability(params mod.CalculateAffixProbabil
 		}
 		response.Combinations = combinations
 	}
-	
+
 	return mod.NewCalculateAffixProbabilityOK().WithPayload(response)
 }
 
@@ -114,25 +114,25 @@ func (h *ModHandler) CalculateStrengthenProbability(params mod.CalculateStrength
 	for i, level := range params.Body.InitialLevels {
 		initialLevels[i] = int(level)
 	}
-	
+
 	targetLevels := make([]int, len(params.Body.TargetLevels))
 	for i, level := range params.Body.TargetLevels {
 		targetLevels[i] = int(level)
 	}
-	
+
 	orderIndependent := true
 	if params.Body.OrderIndependent != nil {
 		orderIndependent = *params.Body.OrderIndependent
 	}
-	
+
 	showPaths := false
 	if params.Body.ShowPaths != nil {
 		showPaths = *params.Body.ShowPaths
 	}
-	
+
 	// 调用服务计算
 	result := h.strengthenService.CalculateProbability(initialLevels, targetLevels, orderIndependent, showPaths)
-	
+
 	// 检查错误
 	if result.Error != "" {
 		errorMsg := result.Error
@@ -142,7 +142,7 @@ func (h *ModHandler) CalculateStrengthenProbability(params mod.CalculateStrength
 			Message: &errorMsg,
 		})
 	}
-	
+
 	// 转换结果
 	response := &models.StrengthenProbabilityResponse{
 		Probability:        &result.Probability,
@@ -150,7 +150,7 @@ func (h *ModHandler) CalculateStrengthenProbability(params mod.CalculateStrength
 		SuccessfulOutcomes: &result.SuccessfulOutcomes,
 		TotalOutcomes:      &result.TotalOutcomes,
 	}
-	
+
 	// 添加路径数据
 	if showPaths && len(result.Paths) > 0 {
 		paths := make([]*models.StrengthenPath, 0, len(result.Paths))
@@ -160,7 +160,7 @@ func (h *ModHandler) CalculateStrengthenProbability(params mod.CalculateStrength
 			for i, level := range path.FinalLevels {
 				finalLevels[i] = int32(level)
 			}
-			
+
 			// 转换步骤
 			steps := make([]*models.StrengthenStep, 0, len(path.Steps))
 			for _, step := range path.Steps {
@@ -173,7 +173,7 @@ func (h *ModHandler) CalculateStrengthenProbability(params mod.CalculateStrength
 					NewLevel: level32,
 				})
 			}
-			
+
 			paths = append(paths, &models.StrengthenPath{
 				Success:     path.Success,
 				FinalLevels: finalLevels,
@@ -182,6 +182,6 @@ func (h *ModHandler) CalculateStrengthenProbability(params mod.CalculateStrength
 		}
 		response.Paths = paths
 	}
-	
+
 	return mod.NewCalculateStrengthenProbabilityOK().WithPayload(response)
 }
