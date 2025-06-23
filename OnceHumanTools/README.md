@@ -8,7 +8,8 @@
 - **模组强化概率计算器** - 计算词条强化到目标等级的成功率
 - **炫酷科幻UI** - 采用Vue3打造的沉浸式科幻风格界面
 - **RESTful API** - 基于Go和Swagger的高性能后端服务
-- **Discord机器人** - 在Discord中直接使用计算工具
+- **Discord机器人** - 使用现代化的Slash Commands交互方式
+- **多平台支持** - 模块化设计，易于扩展到Telegram、Slack等平台
 - **可扩展架构** - 轻松添加新的游戏工具
 
 ## 🚀 快速开始
@@ -33,17 +34,19 @@ npm run dev
 
 访问 http://localhost:3000 查看应用
 
-### Discord机器人
+### Discord机器人（交互式命令）
 
-1. 创建 `.env` 文件：
+1. 创建 `.env` 文件（参考 `bot/.env.example`）：
 ```env
-DISCORD_TOKEN=your_discord_bot_token
+DISCORD_BOT_TOKEN=your_discord_bot_token
+DISCORD_GUILD_ID=your_guild_id（可选，用于开发测试）
+BOT_DEV_MODE=false
 ```
 
 2. 运行机器人：
 ```bash
 cd bot
-go mod tidy
+go mod download
 go run main.go
 ```
 
@@ -55,16 +58,29 @@ go run main.go
 2. 输入参数，点击计算
 3. 查看详细的计算结果和可视化图表
 
-### Discord命令
+### Discord交互式命令（Slash Commands）
 
-- `!oh help` - 显示帮助信息
-- `!oh affix <词条数量> <目标词条ID列表>` - 计算词条概率
-- `!oh strengthen <初始等级> <目标等级> [模式]` - 计算强化概率
+- `/help` - 显示帮助信息
+- `/affix` - 计算词条概率
+  - `slots`: 词条数量 (1-10)
+  - `targets`: 目标词条ID列表，逗号分隔
+  - `show_combinations`: 是否显示详细组合
+- `/strengthen single` - 计算单个词条强化概率
+  - `affix_id`: 词条ID (1-10)
+  - `current_level`: 当前等级 (0-5)
+  - `target_level`: 目标等级 (1-5)
+  - `slot_count`: 词条数量
+  - `tries`: 强化次数
+- `/strengthen multi` - 计算多个词条强化概率
+  - `targets`: 格式 ID:当前:目标，逗号分隔
+  - `slot_count`: 词条数量
+  - `tries`: 强化次数
 
 示例：
 ```
-!oh affix 3 1,4,5,6
-!oh strengthen 1,1,1,1 2,2,2,2
+/affix slots:4 targets:1,4,5
+/strengthen single affix_id:1 current_level:0 target_level:3 slot_count:4 tries:50
+/strengthen multi targets:1:0:3,4:1:5 slot_count:4 tries:100
 ```
 
 ### API接口
@@ -114,9 +130,11 @@ OnceHumanTools/
 │   │   ├── api/     # API调用
 │   │   ├── views/   # 页面组件
 │   │   └── styles/  # 样式文件
-├── bot/            # Discord机器人
-│   ├── commands/   # 命令实现
-│   └── handlers/   # 事件处理
+├── bot/            # 多平台机器人模块
+│   ├── core/       # 核心接口定义
+│   ├── platforms/  # 各平台实现
+│   │   └── discord/# Discord平台
+│   └── shared/     # 共享组件
 └── docs/          # 文档
 ```
 
@@ -136,9 +154,11 @@ OnceHumanTools/
 - Three.js
 - SCSS
 
-### Discord机器人
-- discordgo
-- 命令模式架构
+### 机器人模块
+- discordgo (Discord平台)
+- 交互式命令 (Slash Commands)
+- 模块化架构，支持多平台扩展
+- 接口驱动设计
 
 ## 📊 游戏机制说明
 
