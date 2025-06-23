@@ -1,7 +1,6 @@
 package services
 
 import (
-	"math"
 	"sort"
 )
 
@@ -79,14 +78,14 @@ func (s *AffixProbabilityService) CalculateProbability(slotCount int, targetAffi
 
 // AffixProbabilityResult 词条概率计算结果
 type AffixProbabilityResult struct {
-	Probability        float64     `json:"probability"`
-	ProbabilityPercent float64     `json:"probabilityPercent"`
-	TotalCombinations  int64       `json:"totalCombinations"`
-	ValidCombinations  int64       `json:"validCombinations"`
-	SlotCount          int         `json:"slotCount"`
-	TargetRange        []int       `json:"targetRange"`
-	Combinations       [][]int     `json:"combinations,omitempty"`
-	Error              string      `json:"error,omitempty"`
+	Probability        float64 `json:"probability"`
+	ProbabilityPercent float64 `json:"probabilityPercent"`
+	TotalCombinations  int64   `json:"totalCombinations"`
+	ValidCombinations  int64   `json:"validCombinations"`
+	SlotCount          int     `json:"slotCount"`
+	TargetRange        []int   `json:"targetRange"`
+	Combinations       [][]int `json:"combinations,omitempty"`
+	Error              string  `json:"error,omitempty"`
 }
 
 // combination 计算组合数 C(n,r)
@@ -127,7 +126,7 @@ func generateCombinations(items []int, r int) [][]int {
 
 	var result [][]int
 	combo := make([]int, r)
-	
+
 	var generate func(start, depth int)
 	generate = func(start, depth int) {
 		if depth == r {
@@ -136,13 +135,13 @@ func generateCombinations(items []int, r int) [][]int {
 			result = append(result, comboCopy)
 			return
 		}
-		
+
 		for i := start; i <= n-(r-depth); i++ {
 			combo[depth] = items[i]
 			generate(i+1, depth+1)
 		}
 	}
-	
+
 	generate(0, 0)
 	return result
 }
