@@ -36,6 +36,9 @@ mkdir -p $RELEASE_DIR/{backend,frontend,bot,config}
 # 构建后端
 echo -e "${YELLOW}构建后端服务...${NC}"
 cd backend
+echo -e "${YELLOW}生成Swagger代码...${NC}"
+make generate-swagger
+echo -e "${YELLOW}编译后端可执行文件...${NC}"
 GOOS=$TARGET_OS GOARCH=$TARGET_ARCH CGO_ENABLED=0 \
     go build -ldflags="-s -w" -o ../$RELEASE_DIR/backend/server cmd/server/main.go
 cp -r api ../$RELEASE_DIR/backend/
@@ -52,13 +55,15 @@ cd ..
 echo -e "${GREEN}✓ 前端构建完成${NC}"
 
 # 构建机器人
-echo -e "${YELLOW}构建Discord机器人...${NC}"
-cd bot
-GOOS=$TARGET_OS GOARCH=$TARGET_ARCH CGO_ENABLED=0 \
-    go build -ldflags="-s -w" -o ../$RELEASE_DIR/bot/bot main.go
-cp .env.example ../$RELEASE_DIR/bot/
-cd ..
-echo -e "${GREEN}✓ 机器人构建完成${NC}"
+# echo -e "${YELLOW}构建Discord机器人...${NC}"
+# cd bot
+# GOOS=$TARGET_OS GOARCH=$TARGET_ARCH CGO_ENABLED=0 \
+#     go build -ldflags="-s -w" -o ../$RELEASE_DIR/bot/bot main.go
+# cp .env.example ../$RELEASE_DIR/bot/
+# cd ..
+# echo -e "${GREEN}✓ 机器人构建完成${NC}"
+
+echo -e "${YELLOW}跳过机器人构建（需要修复接口问题）${NC}"
 
 # 构建启动器
 echo -e "${YELLOW}构建启动器...${NC}"

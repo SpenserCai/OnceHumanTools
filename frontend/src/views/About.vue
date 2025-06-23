@@ -47,7 +47,7 @@
         </p>
         <div class="contact-links">
           <a href="https://github.com/oncehuman/tools" target="_blank" class="contact-link">
-            <Github /> GitHub
+            <Link /> GitHub
           </a>
           <a href="#" class="contact-link">
             <Message /> Discord
@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { Github, Message } from '@element-plus/icons-vue'
+import { Link, Message } from '@element-plus/icons-vue'
 </script>
 
 <style lang="scss" scoped>

@@ -1,3 +1,4 @@
+@use 'sass:color';
 @use './variables' as *;
 
 // 全局重置
@@ -250,8 +251,8 @@ body {
   color: $bg-primary;
   
   &:hover {
-    background: lighten($primary-color, 10%);
-    border-color: lighten($primary-color, 10%);
+    background: color.scale($primary-color, $lightness: 10%);
+    border-color: color.scale($primary-color, $lightness: 10%);
   }
 }
 

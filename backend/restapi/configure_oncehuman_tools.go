@@ -5,14 +5,11 @@ package restapi
 import (
 	"crypto/tls"
 	"net/http"
-	"time"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/rs/cors"
 
-	"github.com/SpenserCai/OnceHumanTools/backend/internal/handlers"
 	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations"
 	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations/mod"
 	"github.com/SpenserCai/OnceHumanTools/backend/restapi/operations/system"
@@ -40,37 +37,34 @@ func configureAPI(api *operations.OncehumanToolsAPI) http.Handler {
 	// api.UseRedoc()
 
 	api.JSONConsumer = runtime.JSONConsumer()
+
 	api.JSONProducer = runtime.JSONProducer()
 
-	// 创建处理器实例
-	modHandler := handlers.NewModHandler()
-	systemHandler := handlers.NewSystemHandler()
-	toolsHandler := handlers.NewToolsHandler()
-
-	// 健康检查
-	api.SystemHealthCheckHandler = system.HealthCheckHandlerFunc(func(params system.HealthCheckParams) middleware.Responder {
-		return systemHandler.HealthCheck(params)
-	})
-
-	// 词条列表
-	api.ModListAffixesHandler = mod.ListAffixesHandlerFunc(func(params mod.ListAffixesParams) middleware.Responder {
-		return modHandler.ListAffixes(params)
-	})
-
-	// 词条概率计算
-	api.ModCalculateAffixProbabilityHandler = mod.CalculateAffixProbabilityHandlerFunc(func(params mod.CalculateAffixProbabilityParams) middleware.Responder {
-		return modHandler.CalculateAffixProbability(params)
-	})
-
-	// 强化概率计算
-	api.ModCalculateStrengthenProbabilityHandler = mod.CalculateStrengthenProbabilityHandlerFunc(func(params mod.CalculateStrengthenProbabilityParams) middleware.Responder {
-		return modHandler.CalculateStrengthenProbability(params)
-	})
-
-	// 工具列表
-	api.ToolsListToolsHandler = tools.ListToolsHandlerFunc(func(params tools.ListToolsParams) middleware.Responder {
-		return toolsHandler.ListTools(params)
-	})
+	if api.ModCalculateAffixProbabilityHandler == nil {
+		api.ModCalculateAffixProbabilityHandler = mod.CalculateAffixProbabilityHandlerFunc(func(params mod.CalculateAffixProbabilityParams) middleware.Responder {
+			return middleware.NotImplemented("operation mod.CalculateAffixProbability has not yet been implemented")
+		})
+	}
+	if api.ModCalculateStrengthenProbabilityHandler == nil {
+		api.ModCalculateStrengthenProbabilityHandler = mod.CalculateStrengthenProbabilityHandlerFunc(func(params mod.CalculateStrengthenProbabilityParams) middleware.Responder {
+			return middleware.NotImplemented("operation mod.CalculateStrengthenProbability has not yet been implemented")
+		})
+	}
+	if api.SystemHealthCheckHandler == nil {
+		api.SystemHealthCheckHandler = system.HealthCheckHandlerFunc(func(params system.HealthCheckParams) middleware.Responder {
+			return middleware.NotImplemented("operation system.HealthCheck has not yet been implemented")
+		})
+	}
+	if api.ModListAffixesHandler == nil {
+		api.ModListAffixesHandler = mod.ListAffixesHandlerFunc(func(params mod.ListAffixesParams) middleware.Responder {
+			return middleware.NotImplemented("operation mod.ListAffixes has not yet been implemented")
+		})
+	}
+	if api.ToolsListToolsHandler == nil {
+		api.ToolsListToolsHandler = tools.ListToolsHandlerFunc(func(params tools.ListToolsParams) middleware.Responder {
+			return middleware.NotImplemented("operation tools.ListTools has not yet been implemented")
+		})
+	}
 
 	api.PreServerShutdown = func() {}
 
@@ -89,10 +83,6 @@ func configureTLS(tlsConfig *tls.Config) {
 // This function can be called multiple times, depending on the number of serving schemes.
 // scheme value will be set accordingly: "http", "https" or "unix".
 func configureServer(s *http.Server, scheme, addr string) {
-	// 设置服务器超时
-	s.ReadTimeout = 30 * time.Second
-	s.WriteTimeout = 30 * time.Second
-	s.IdleTimeout = 120 * time.Second
 }
 
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
@@ -104,14 +94,5 @@ func setupMiddlewares(handler http.Handler) http.Handler {
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
 // So this is a good place to plug in a panic handling middleware, logging and metrics.
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
-	// 添加CORS支持
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"*"},
-		AllowCredentials: true,
-		MaxAge:           300,
-	})
-
-	return c.Handler(handler)
+	return handler
 }

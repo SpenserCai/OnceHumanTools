@@ -239,6 +239,7 @@ const getProbabilityTagType = () => {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:color';
 @use '@/styles/variables' as *;
 
 .strengthen-probability-page {
@@ -444,11 +445,11 @@ const getProbabilityTagType = () => {
           transition: width $transition-slow ease-out;
           
           &.success-bar {
-            background: linear-gradient(90deg, $success-color, lighten($success-color, 10%));
+            background: linear-gradient(90deg, $success-color, color.scale($success-color, $lightness: 10%));
           }
           
           &.fail-bar {
-            background: linear-gradient(90deg, $danger-color, lighten($danger-color, 10%));
+            background: linear-gradient(90deg, $danger-color, color.scale($danger-color, $lightness: 10%));
           }
         }
       }

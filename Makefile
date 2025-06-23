@@ -69,9 +69,11 @@ $(RELEASE_DIR):
 
 # 构建后端
 build-backend: $(RELEASE_DIR)
+	@echo "$(YELLOW)生成Swagger代码...$(NC)"
+	cd $(BACKEND_DIR) && $(MAKE) generate-swagger
 	@echo "$(YELLOW)构建后端服务...$(NC)"
 	cd $(BACKEND_DIR) && $(GO_BUILD_STATIC) -o ../$(BACKEND_BIN) cmd/server/main.go
-	@cp -r $(BACKEND_DIR)/api ../$(RELEASE_DIR)/backend/
+	@cp -r $(BACKEND_DIR)/api $(RELEASE_DIR)/backend/
 	@echo "$(GREEN)后端构建完成！$(NC)"
 
 # 构建前端
@@ -99,7 +101,7 @@ build-integrated: clean $(RELEASE_DIR)
 	@echo "$(GREEN)========== 集成构建模式 ==========$(NC)"
 	@$(MAKE) build-backend
 	@$(MAKE) build-frontend
-	@$(MAKE) build-bot
+	# @$(MAKE) build-bot  # 暂时禁用，需要修复接口问题
 	@$(MAKE) build-launcher
 	@echo ""
 	@echo "$(YELLOW)创建配置文件...$(NC)"
