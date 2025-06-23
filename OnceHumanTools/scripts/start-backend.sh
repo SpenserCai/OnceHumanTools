@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# 后端服务启动脚本
+
+# 设置工作目录
+cd "$(dirname "$0")"
+
+# 检查环境变量文件
+if [ ! -f .env ]; then
+    echo "创建 .env 文件..."
+    cp .env.example .env
+    echo "请编辑 .env 文件配置环境变量"
+    exit 1
+fi
+
+# 加载环境变量
+export $(cat .env | grep -v '^#' | xargs)
+
+# 设置默认端口
+PORT=${PORT:-8080}
+
+echo "启动后端服务..."
+echo "端口: $PORT"
+echo "API文档: http://localhost:$PORT/docs"
+
+# 启动服务
+./server --port $PORT

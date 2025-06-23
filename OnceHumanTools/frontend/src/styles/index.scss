@@ -1,0 +1,266 @@
+@use './variables' as *;
+
+// 全局重置
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body {
+  font-family: $font-primary;
+  background: $bg-primary;
+  color: $text-primary;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 科幻风格按钮
+.sci-fi-btn {
+  position: relative;
+  padding: $spacing-md $spacing-xl;
+  background: transparent;
+  border: 2px solid $primary-color;
+  color: $primary-color;
+  font-family: $font-tech;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all $transition-normal;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, $primary-color, transparent);
+    transition: left $transition-slow;
+  }
+  
+  &:hover {
+    color: $bg-primary;
+    background: $primary-color;
+    box-shadow: $shadow-glow;
+    
+    &::before {
+      left: 100%;
+    }
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  &.secondary {
+    border-color: $secondary-color;
+    color: $secondary-color;
+    
+    &::before {
+      background: linear-gradient(90deg, transparent, $secondary-color, transparent);
+    }
+    
+    &:hover {
+      background: $secondary-color;
+      box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+    }
+  }
+}
+
+// 科幻风格卡片
+.sci-fi-card {
+  position: relative;
+  background: $bg-card;
+  border: 1px solid $border-color;
+  backdrop-filter: blur(10px);
+  padding: $spacing-lg;
+  transition: all $transition-normal;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+      transparent 0%, 
+      rgba(0, 255, 136, 0.05) 50%, 
+      transparent 100%);
+    opacity: 0;
+    transition: opacity $transition-normal;
+  }
+  
+  &:hover {
+    border-color: $border-hover;
+    box-shadow: $shadow-md;
+    
+    &::before {
+      opacity: 1;
+    }
+  }
+  
+  .card-header {
+    font-family: $font-tech;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $primary-color;
+    margin-bottom: $spacing-md;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .card-content {
+    color: $text-secondary;
+  }
+}
+
+// 科幻风格输入框
+.sci-fi-input {
+  width: 100%;
+  padding: $spacing-md;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid $border-color;
+  color: $text-primary;
+  font-family: $font-primary;
+  font-size: 1rem;
+  outline: none;
+  transition: all $transition-normal;
+  
+  &::placeholder {
+    color: $text-muted;
+  }
+  
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+// 光效文字
+.glow-text {
+  color: $primary-color;
+  text-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 20px currentColor;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+// 科幻分割线
+.sci-fi-divider {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    $primary-color 50%, 
+    transparent 100%);
+  margin: $spacing-xl 0;
+  
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    background: $primary-color;
+    border-radius: 50%;
+  }
+  
+  &::before {
+    left: 20%;
+  }
+  
+  &::after {
+    right: 20%;
+  }
+}
+
+// 网格背景
+.grid-bg {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      linear-gradient(rgba(0, 255, 136, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 255, 136, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+  }
+}
+
+// 响应式工具类
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .sci-fi-border {
+    display: none;
+  }
+}
+
+// 动画类
+.fade-in {
+  animation: fadeIn $transition-slow ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Element Plus 主题覆盖
+.el-button--primary {
+  background: $primary-color;
+  border-color: $primary-color;
+  color: $bg-primary;
+  
+  &:hover {
+    background: lighten($primary-color, 10%);
+    border-color: lighten($primary-color, 10%);
+  }
+}
+
+.el-input__inner {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: $border-color;
+  color: $text-primary;
+  
+  &:focus {
+    border-color: $primary-color;
+  }
+}
