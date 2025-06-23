@@ -46,6 +46,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Build output
+release/
+*.tar.gz
+*.zip
+
 # Logs
 logs
 *.log

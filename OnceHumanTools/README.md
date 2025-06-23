@@ -14,41 +14,67 @@
 
 ## 🚀 快速开始
 
-### 后端服务
+### 方式一：一键启动（推荐）
 
+```bash
+# 构建并运行集成版本
+make run-integrated
+
+# 或包含Discord机器人
+make run-bot
+```
+
+访问 http://localhost:9000 即可使用完整功能。
+
+### 方式二：分别启动各服务
+
+#### 后端服务
 ```bash
 cd backend
 go mod tidy
 make run
 ```
+API文档：http://localhost:8080/docs
 
-API文档将在 http://localhost:8080/docs 可用
-
-### 前端应用
-
+#### 前端应用
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
+访问：http://localhost:3000
 
-访问 http://localhost:3000 查看应用
-
-### Discord机器人（交互式命令）
-
-1. 创建 `.env` 文件（参考 `bot/.env.example`）：
-```env
-DISCORD_BOT_TOKEN=your_discord_bot_token
-DISCORD_GUILD_ID=your_guild_id（可选，用于开发测试）
-BOT_DEV_MODE=false
-```
-
-2. 运行机器人：
+#### Discord机器人
 ```bash
 cd bot
-go mod download
+cp .env.example .env
+# 编辑 .env 配置 DISCORD_BOT_TOKEN
 go run main.go
 ```
+
+## 🔨 构建说明
+
+### 集成构建（开发用）
+```bash
+# 使用 Makefile
+make build-integrated
+
+# 或使用脚本
+./build.sh
+```
+
+### 发布构建（生产用）
+```bash
+# 构建发布版本
+make build-release
+
+# 交叉编译
+./build.sh cross linux amd64
+./build.sh cross windows amd64
+./build.sh cross darwin amd64
+```
+
+构建产物位于 `release/` 目录。
 
 ## 📖 使用指南
 
