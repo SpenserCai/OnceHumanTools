@@ -19,6 +19,12 @@ BUILD_MODE=${1:-integrated}
 TARGET_OS=${2:-$(go env GOOS)}
 TARGET_ARCH=${3:-$(go env GOARCH)}
 
+# 设置可执行文件扩展名
+EXE_EXT=""
+if [ "$TARGET_OS" == "windows" ]; then
+    EXE_EXT=".exe"
+fi
+
 echo -e "${GREEN}OnceHuman工具集 - 构建脚本${NC}"
 echo -e "构建模式: ${YELLOW}$BUILD_MODE${NC}"
 echo -e "目标系统: ${YELLOW}$TARGET_OS/$TARGET_ARCH${NC}"
@@ -40,7 +46,7 @@ echo -e "${YELLOW}生成Swagger代码...${NC}"
 make generate-swagger
 echo -e "${YELLOW}编译后端可执行文件...${NC}"
 GOOS=$TARGET_OS GOARCH=$TARGET_ARCH CGO_ENABLED=0 \
-    go build -ldflags="-s -w" -o ../$RELEASE_DIR/backend/server cmd/server/main.go
+    go build -ldflags="-s -w" -o ../$RELEASE_DIR/backend/server${EXE_EXT} cmd/server/main.go
 cp -r api ../$RELEASE_DIR/backend/
 cd ..
 echo -e "${GREEN}✓ 后端构建完成${NC}"
@@ -68,7 +74,7 @@ echo -e "${YELLOW}跳过机器人构建（需要修复接口问题）${NC}"
 # 构建启动器
 echo -e "${YELLOW}构建启动器...${NC}"
 GOOS=$TARGET_OS GOARCH=$TARGET_ARCH CGO_ENABLED=0 \
-    go build -ldflags="-s -w" -o $RELEASE_DIR/launcher cmd/launcher/main.go
+    go build -ldflags="-s -w" -o $RELEASE_DIR/launcher${EXE_EXT} cmd/launcher/main.go
 echo -e "${GREEN}✓ 启动器构建完成${NC}"
 
 # 复制配置和脚本
