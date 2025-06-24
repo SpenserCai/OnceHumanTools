@@ -12,8 +12,8 @@
         <div class="checkbox-background"></div>
         <div class="checkbox-border"></div>
         <div class="checkbox-checkmark" v-if="modelValue">
-          <svg viewBox="0 0 12 12" class="checkmark-icon">
-            <polyline points="1,6 4,9 11,2" stroke="currentColor" stroke-width="2" fill="none"/>
+          <svg viewBox="0 0 16 16" class="checkmark-icon">
+            <polyline points="3,8 6,11 13,4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <div class="checkbox-glow"></div>
@@ -74,8 +74,8 @@ const handleChange = (event) => {
   
   .checkbox-box {
     position: relative;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     
     .checkbox-background {
       position: absolute;
@@ -104,15 +104,15 @@ const handleChange = (event) => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 12px;
-      height: 12px;
-      color: $primary-color;
+      width: 16px;
+      height: 16px;
+      color: #ffffff;
       animation: checkmark-appear $transition-normal ease-out;
       
       .checkmark-icon {
         width: 100%;
         height: 100%;
-        filter: drop-shadow(0 0 4px currentColor);
+        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
       }
     }
     

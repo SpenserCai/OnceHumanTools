@@ -52,7 +52,7 @@
       </HologramCard>
       
       <!-- 结果区域 -->
-      <HologramCard v-if="result" class="result-section fade-in" title="计算结果" variant="secondary" glow>
+      <HologramCard v-if="result" class="result-section fade-in" title="计算结果" variant="secondary">
         
         <!-- 概率显示 -->
         <div class="probability-display">
