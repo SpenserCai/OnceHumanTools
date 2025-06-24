@@ -30,12 +30,7 @@
       </div>
     </div>
     
-    <div class="card-corner-effects">
-      <div class="corner corner-tl"></div>
-      <div class="corner corner-tr"></div>
-      <div class="corner corner-bl"></div>
-      <div class="corner corner-br"></div>
-    </div>
+
   </div>
 </template>
 
@@ -142,54 +137,7 @@ const handleClick = (event) => {
     }
   }
   
-  .card-corner-effects {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    
-    .corner {
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border: 2px solid transparent;
-      transition: all $transition-normal;
-      
-      &.corner-tl {
-        top: 0;
-        left: 0;
-        border-top-color: $primary-color;
-        border-left-color: $primary-color;
-        border-top-left-radius: $radius-lg;
-      }
-      
-      &.corner-tr {
-        top: 0;
-        right: 0;
-        border-top-color: $primary-color;
-        border-right-color: $primary-color;
-        border-top-right-radius: $radius-lg;
-      }
-      
-      &.corner-bl {
-        bottom: 0;
-        left: 0;
-        border-bottom-color: $primary-color;
-        border-left-color: $primary-color;
-        border-bottom-left-radius: $radius-lg;
-      }
-      
-      &.corner-br {
-        bottom: 0;
-        right: 0;
-        border-bottom-color: $primary-color;
-        border-right-color: $primary-color;
-        border-bottom-right-radius: $radius-lg;
-      }
-    }
-  }
+
   
   // Variants
   &--default {
@@ -224,9 +172,7 @@ const handleClick = (event) => {
       color: $secondary-color;
     }
     
-    .corner {
-      border-color: $secondary-color !important;
-    }
+
   }
   
   &--accent {
@@ -243,9 +189,7 @@ const handleClick = (event) => {
       color: $accent-color;
     }
     
-    .corner {
-      border-color: $accent-color !important;
-    }
+
   }
   
   // States
@@ -264,10 +208,7 @@ const handleClick = (event) => {
         opacity: 0.8;
       }
       
-      .corner {
-        width: 30px;
-        height: 30px;
-      }
+
     }
     
     &:active {
