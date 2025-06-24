@@ -31,10 +31,11 @@ func (h *ModHandler) ListAffixes(params mod.ListAffixesParams) middleware.Respon
 	affixList := make([]*models.Affix, 0, len(affixes))
 	for _, affix := range affixes {
 		id := int32(affix.ID)
+		name := affix.Name
 		category := affix.Category
 		affixList = append(affixList, &models.Affix{
 			ID:          &id,
-			Name:        &affix.Name,
+			Name:        &name,
 			Description: affix.Description,
 			Category:    category,
 		})

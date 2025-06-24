@@ -34,7 +34,6 @@
               >
                 <el-checkbox 
                   :label="affix.id"
-                  :disabled="selectedAffixes.length >= slotCount && !selectedAffixes.includes(affix.id)"
                 >
                   <span class="affix-name">{{ affix.name }}</span>
                   <el-tag 
@@ -255,7 +254,7 @@ const selectCategory = (category) => {
     .filter(affix => affix.category === category)
     .map(affix => affix.id)
   
-  selectedAffixes.value = categoryAffixes.slice(0, slotCount.value)
+  selectedAffixes.value = categoryAffixes
 }
 
 // 清空选择
@@ -298,10 +297,8 @@ const getAffixTagType = (id) => {
 
 // 监听词条数量变化
 watch(slotCount, () => {
-  // 如果选中的词条超过了槽位数，截断
-  if (selectedAffixes.value.length > slotCount.value) {
-    selectedAffixes.value = selectedAffixes.value.slice(0, slotCount.value)
-  }
+  // 词条数量变化时，不再限制目标词条范围的数量
+  // 用户可以选择任意数量的目标词条作为候选范围
 })
 
 onMounted(() => {

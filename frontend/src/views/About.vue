@@ -46,7 +46,7 @@
           如果您有任何问题、建议或想要贡献代码，欢迎通过以下方式联系我们：
         </p>
         <div class="contact-links">
-          <a href="https://github.com/oncehuman/tools" target="_blank" class="contact-link">
+          <a href="https://github.com/SpenserCai/OnceHumanTools" target="_blank" class="contact-link">
             <Link /> GitHub
           </a>
           <a href="#" class="contact-link">
