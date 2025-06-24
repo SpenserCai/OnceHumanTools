@@ -1,43 +1,45 @@
 <template>
   <div class="hologram-slider">
     <div class="slider-label" v-if="label">{{ label }}</div>
-    <div class="slider-container">
-      <div class="slider-track" ref="track" @click="handleTrackClick">
-        <div 
-          class="slider-fill" 
-          :style="{ width: fillPercentage + '%' }"
-        ></div>
-        <div 
-          class="slider-thumb" 
-          :style="{ left: fillPercentage + '%' }"
-          @mousedown="startDrag"
-          @touchstart="startDrag"
-        >
-          <div class="thumb-core"></div>
-          <div class="thumb-glow"></div>
+    <div class="slider-main">
+      <div class="slider-container">
+        <div class="slider-track" ref="track" @click="handleTrackClick">
+          <div 
+            class="slider-fill" 
+            :style="{ width: fillPercentage + '%' }"
+          ></div>
+          <div 
+            class="slider-thumb" 
+            :style="{ left: fillPercentage + '%' }"
+            @mousedown="startDrag"
+            @touchstart="startDrag"
+          >
+            <div class="thumb-core"></div>
+            <div class="thumb-glow"></div>
+          </div>
+        </div>
+        <div class="slider-marks" v-if="marks">
+          <div 
+            v-for="(mark, value) in marks" 
+            :key="value"
+            class="mark"
+            :style="{ left: ((value - min) / (max - min)) * 100 + '%' }"
+          >
+            <div class="mark-dot"></div>
+            <div class="mark-label">{{ mark }}</div>
+          </div>
         </div>
       </div>
-      <div class="slider-marks" v-if="marks">
-        <div 
-          v-for="(mark, value) in marks" 
-          :key="value"
-          class="mark"
-          :style="{ left: ((value - min) / (max - min)) * 100 + '%' }"
-        >
-          <div class="mark-dot"></div>
-          <div class="mark-label">{{ mark }}</div>
-        </div>
+      <div class="slider-input" v-if="showInput">
+        <input 
+          type="number" 
+          :value="modelValue" 
+          @input="handleInputChange"
+          :min="min"
+          :max="max"
+          class="hologram-input"
+        />
       </div>
-    </div>
-    <div class="slider-input" v-if="showInput">
-      <input 
-        type="number" 
-        :value="modelValue" 
-        @input="handleInputChange"
-        :min="min"
-        :max="max"
-        class="hologram-input"
-      />
     </div>
   </div>
 </template>
@@ -141,9 +143,17 @@ const handleInputChange = (event) => {
     font-weight: 500;
   }
   
+  .slider-main {
+    display: flex;
+    align-items: flex-start;
+    gap: $spacing-md;
+  }
+  
   .slider-container {
     position: relative;
-    margin-bottom: $spacing-md;
+    flex: 1;
+    padding-bottom: 35px;
+             padding-top: 13px;
   }
   
   .slider-track {
@@ -242,41 +252,46 @@ const handleInputChange = (event) => {
   
   .slider-marks {
     position: absolute;
-    top: 20px;
+    top: 28px;
     left: 0;
     right: 0;
-    height: 20px;
+    height: 25px;
     
     .mark {
       position: absolute;
       transform: translateX(-50%);
       
       .mark-dot {
-        width: 4px;
-        height: 4px;
+        width: 3px;
+        height: 3px;
         background: rgba(0, 212, 255, 0.6);
         border-radius: 50%;
-        margin: 0 auto 4px;
+        margin: 0 auto 2px;
       }
       
       .mark-label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         color: $text-muted;
         text-align: center;
-        min-width: 20px;
+        min-width: 16px;
+        line-height: 1.2;
       }
     }
   }
   
   .slider-input {
+    flex-shrink: 0;
+    
     .hologram-input {
-      width: 80px;
+      width: 60px;
+      height: 32px;
       padding: $spacing-xs $spacing-sm;
       background: rgba(0, 33, 66, 0.6);
       border: 1px solid rgba(0, 212, 255, 0.3);
       border-radius: $radius-sm;
       color: $text-primary;
       font-family: $font-tech;
+      font-size: 0.9rem;
       text-align: center;
       outline: none;
       transition: all $transition-normal;
@@ -284,6 +299,10 @@ const handleInputChange = (event) => {
       &:focus {
         border-color: $primary-color;
         box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+      }
+      
+      &:hover {
+        border-color: rgba(0, 212, 255, 0.6);
       }
       
       &::-webkit-outer-spin-button,
