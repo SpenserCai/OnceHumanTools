@@ -74,8 +74,8 @@ const handleChange = (event) => {
   
   .checkbox-box {
     position: relative;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     
     .checkbox-background {
       position: absolute;
@@ -104,8 +104,8 @@ const handleChange = (event) => {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       color: #ffffff;
       animation: checkmark-appear $transition-normal ease-out;
       
