@@ -3,16 +3,14 @@
     <div class="container">
       <h1 class="page-title glow-text">关于 OnceHuman 工具集</h1>
       
-      <div class="content-section sci-fi-card">
-        <h2>项目介绍</h2>
+      <HologramCard class="content-section" title="项目介绍" variant="primary">
         <p>
           OnceHuman工具集是一个专为《七日世界》(Once Human)游戏玩家打造的综合性工具平台。
           我们提供精确的数学计算工具，帮助玩家优化游戏策略，提升游戏体验。
         </p>
-      </div>
+      </HologramCard>
       
-      <div class="content-section sci-fi-card">
-        <h2>功能特色</h2>
+      <HologramCard class="content-section" title="功能特色" variant="secondary">
         <ul>
           <li>🎯 精确的概率计算 - 基于游戏机制的数学模型</li>
           <li>🚀 高性能后端 - 使用Go语言开发，响应迅速</li>
@@ -20,10 +18,9 @@
           <li>🤖 Discord集成 - 在聊天中即可使用工具</li>
           <li>📱 响应式设计 - 支持各种设备访问</li>
         </ul>
-      </div>
+      </HologramCard>
       
-      <div class="content-section sci-fi-card">
-        <h2>技术栈</h2>
+      <HologramCard class="content-section" title="技术栈" variant="primary">
         <div class="tech-grid">
           <div class="tech-item">
             <h3>前端</h3>
@@ -38,28 +35,32 @@
             <p>Discord.go + 命令模式</p>
           </div>
         </div>
-      </div>
+      </HologramCard>
       
-      <div class="content-section sci-fi-card">
-        <h2>联系我们</h2>
+      <HologramCard class="content-section" title="联系我们" variant="secondary">
         <p>
           如果您有任何问题、建议或想要贡献代码，欢迎通过以下方式联系我们：
         </p>
         <div class="contact-links">
-          <a href="https://github.com/SpenserCai/OnceHumanTools" target="_blank" class="contact-link">
+          <HologramButton variant="outline" @click="openGitHub">
             <Link /> GitHub
-          </a>
-          <a href="#" class="contact-link">
+          </HologramButton>
+          <HologramButton variant="outline" disabled>
             <Message /> Discord
-          </a>
+          </HologramButton>
         </div>
-      </div>
+      </HologramCard>
     </div>
   </div>
 </template>
 
 <script setup>
 import { Link, Message } from '@element-plus/icons-vue'
+import { HologramCard, HologramButton } from '@/components'
+
+const openGitHub = () => {
+  window.open('https://github.com/SpenserCai/OnceHumanTools', '_blank')
+}
 </script>
 
 <style lang="scss" scoped>
@@ -85,13 +86,6 @@ import { Link, Message } from '@element-plus/icons-vue'
   
   .content-section {
     margin-bottom: $spacing-xl;
-    
-    h2 {
-      font-family: $font-tech;
-      font-size: 1.5rem;
-      color: $primary-color;
-      margin-bottom: $spacing-md;
-    }
     
     p {
       line-height: 1.8;
@@ -140,23 +134,6 @@ import { Link, Message } from '@element-plus/icons-vue'
     display: flex;
     gap: $spacing-lg;
     margin-top: $spacing-lg;
-    
-    .contact-link {
-      display: flex;
-      align-items: center;
-      gap: $spacing-sm;
-      padding: $spacing-sm $spacing-lg;
-      border: 1px solid $border-color;
-      color: $text-primary;
-      text-decoration: none;
-      transition: all $transition-normal;
-      
-      &:hover {
-        border-color: $primary-color;
-        color: $primary-color;
-        box-shadow: $shadow-sm;
-      }
-    }
   }
 }
 </style>

@@ -4,18 +4,20 @@
     <div v-else class="tools-list">
       <h1 class="page-title glow-text">工具列表</h1>
       <div class="tools-grid">
-        <router-link
+        <HologramCard
           v-for="tool in tools"
           :key="tool.path"
-          :to="tool.path"
-          class="tool-card sci-fi-card"
+          class="tool-card"
+          variant="primary"
+          interactive
+          @click="$router.push(tool.path)"
         >
           <div class="tool-icon">
             <component :is="tool.icon" />
           </div>
           <h3 class="tool-title">{{ tool.name }}</h3>
           <p class="tool-desc">{{ tool.description }}</p>
-        </router-link>
+        </HologramCard>
       </div>
     </div>
   </div>
@@ -23,6 +25,7 @@
 
 <script setup>
 import { Histogram, TrendCharts } from '@element-plus/icons-vue'
+import { HologramCard } from '@/components'
 
 const tools = [
   {
@@ -68,14 +71,7 @@ const tools = [
   }
   
   .tool-card {
-    display: block;
-    text-decoration: none;
     text-align: center;
-    transition: transform $transition-normal;
-    
-    &:hover {
-      transform: translateY(-5px);
-    }
     
     .tool-icon {
       font-size: 3rem;

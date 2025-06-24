@@ -7,81 +7,52 @@
     
     <div class="tool-container">
       <!-- 输入区域 -->
-      <div class="input-section sci-fi-card">
-        <h2 class="section-title">参数设置</h2>
+      <HologramCard class="input-section" title="参数设置" variant="primary">
         
         <!-- 词条数量选择 -->
         <div class="form-group">
-          <label class="form-label">词条数量</label>
-          <el-slider 
-            v-model="slotCount" 
-            :min="1" 
+          <HologramSlider
+            v-model="slotCount"
+            :min="1"
             :max="10"
             :marks="slotMarks"
-            show-input
+            :showInput="true"
+            label="词条数量"
           />
         </div>
         
         <!-- 词条选择 -->
         <div class="form-group">
-          <label class="form-label">目标词条范围</label>
-          <div class="affix-selector">
-            <el-checkbox-group v-model="selectedAffixes">
-              <div 
-                v-for="affix in affixList" 
-                :key="affix.id"
-                class="affix-item"
-              >
-                <el-checkbox 
-                  :label="affix.id"
-                >
-                  <span class="affix-name">{{ affix.name }}</span>
-                  <el-tag 
-                    :type="getTagType(affix.category)" 
-                    size="small"
-                    class="affix-tag"
-                  >
-                    {{ getCategoryName(affix.category) }}
-                  </el-tag>
-                </el-checkbox>
-              </div>
-            </el-checkbox-group>
-          </div>
-        </div>
-        
-        <!-- 快速选择 -->
-        <div class="form-group">
-          <label class="form-label">快速选择</label>
-          <div class="quick-select">
-            <el-button @click="selectCategory('damage')">伤害类</el-button>
-            <el-button @click="selectCategory('defense')">防御类</el-button>
-            <el-button @click="selectCategory('utility')">功能类</el-button>
-            <el-button @click="clearSelection">清空</el-button>
-          </div>
+          <AffixSelector
+            v-model="selectedAffixes"
+            :affixList="affixList"
+            title="目标词条范围"
+            :showQuickActions="true"
+          />
         </div>
         
         <!-- 显示选项 -->
         <div class="form-group">
-          <el-checkbox v-model="showCombinations">
+          <HologramCheckbox v-model="showCombinations">
             显示具体组合
-          </el-checkbox>
+          </HologramCheckbox>
         </div>
         
         <!-- 计算按钮 -->
         <div class="form-actions">
-          <button 
-            class="sci-fi-btn"
+          <HologramButton
+            variant="primary"
+            size="large"
             :disabled="selectedAffixes.length === 0"
             @click="calculate"
           >
             开始计算
-          </button>
+          </HologramButton>
         </div>
-      </div>
+      </HologramCard>
       
       <!-- 结果区域 -->
-      <div v-if="result" class="result-section sci-fi-card fade-in">
-        <h2 class="section-title">计算结果</h2>
+      <HologramCard v-if="result" class="result-section fade-in" title="计算结果" variant="secondary" glow>
         
         <!-- 概率显示 -->
         <div class="probability-display">
@@ -135,7 +106,7 @@
         <div class="chart-section">
           <canvas ref="chartCanvas"></canvas>
         </div>
-      </div>
+      </HologramCard>
     </div>
   </div>
 </template>
@@ -145,6 +116,11 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { Chart, registerables } from 'chart.js'
 import api from '@/api'
+import HologramSlider from '@/components/ui/HologramSlider.vue'
+import HologramButton from '@/components/ui/HologramButton.vue'
+import HologramCheckbox from '@/components/ui/HologramCheckbox.vue'
+import AffixSelector from '@/components/forms/AffixSelector.vue'
+import HologramCard from '@/components/layout/HologramCard.vue'
 
 Chart.register(...registerables)
 
@@ -217,8 +193,8 @@ const updateChart = () => {
           result.value.validCombinations,
           result.value.totalCombinations - result.value.validCombinations
         ],
-        backgroundColor: ['#00ff88', '#333333'],
-        borderColor: ['#00ff88', '#333333'],
+        backgroundColor: ['#00d4ff', '#333333'],
+        borderColor: ['#00d4ff', '#333333'],
         borderWidth: 2
       }]
     },
@@ -248,20 +224,7 @@ const updateChart = () => {
   })
 }
 
-// 分类选择
-const selectCategory = (category) => {
-  const categoryAffixes = affixList.value
-    .filter(affix => affix.category === category)
-    .map(affix => affix.id)
-  
-  selectedAffixes.value = categoryAffixes
-}
-
-// 清空选择
-const clearSelection = () => {
-  selectedAffixes.value = []
-  result.value = null
-}
+// 这些功能现在由AffixSelector组件处理
 
 // 获取词条名称
 const getAffixName = (id) => {
@@ -361,32 +324,7 @@ onMounted(() => {
     }
   }
   
-  .affix-selector {
-    max-height: 300px;
-    overflow-y: auto;
-    padding: $spacing-md;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid $border-color;
-    border-radius: $radius-md;
-    
-    .affix-item {
-      margin-bottom: $spacing-sm;
-      
-      .affix-name {
-        margin-right: $spacing-sm;
-      }
-      
-      .affix-tag {
-        font-size: 0.75rem;
-      }
-    }
-  }
-  
-  .quick-select {
-    display: flex;
-    gap: $spacing-sm;
-    flex-wrap: wrap;
-  }
+  // affix-selector 样式现在在专门的组件中处理
   
   .form-actions {
     margin-top: $spacing-xl;
@@ -492,31 +430,5 @@ onMounted(() => {
   }
 }
 
-// Element Plus 样式覆盖
-:deep(.el-slider) {
-  .el-slider__runway {
-    background: rgba(0, 255, 136, 0.2);
-  }
-  
-  .el-slider__bar {
-    background: $primary-color;
-  }
-  
-  .el-slider__button {
-    border-color: $primary-color;
-  }
-}
-
-:deep(.el-checkbox) {
-  .el-checkbox__label {
-    color: $text-primary;
-  }
-  
-  .el-checkbox__input.is-checked {
-    .el-checkbox__inner {
-      background: $primary-color;
-      border-color: $primary-color;
-    }
-  }
-}
+// 不再需要Element Plus样式覆盖，因为我们使用了自定义组件
 </style>

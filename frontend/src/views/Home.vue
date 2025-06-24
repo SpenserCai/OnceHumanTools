@@ -26,12 +26,12 @@
           专业的游戏数据计算与分析工具
         </p>
         <div class="hero-buttons fade-in">
-          <router-link to="/tools" class="sci-fi-btn">
+          <HologramButton variant="primary" @click="$router.push('/tools')">
             开始使用
-          </router-link>
-          <a href="#features" class="sci-fi-btn secondary">
+          </HologramButton>
+          <HologramButton variant="outline" @click="scrollToFeatures">
             了解更多
-          </a>
+          </HologramButton>
         </div>
       </div>
       
@@ -46,10 +46,12 @@
       <div class="container">
         <h2 class="section-title glow-text">核心功能</h2>
         <div class="features-grid">
-          <div 
+          <HologramCard
             v-for="feature in features" 
             :key="feature.id"
-            class="feature-card sci-fi-card"
+            class="feature-card"
+            variant="primary"
+            interactive
             @click="navigateToTool(feature.path)"
           >
             <div class="feature-icon">
@@ -57,7 +59,7 @@
             </div>
             <h3 class="feature-title">{{ feature.title }}</h3>
             <p class="feature-desc">{{ feature.description }}</p>
-          </div>
+          </HologramCard>
         </div>
       </div>
     </section>
@@ -81,6 +83,7 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Histogram, TrendCharts, DataAnalysis, Setting } from '@element-plus/icons-vue'
 import * as THREE from 'three'
+import { HologramButton, HologramCard } from '@/components'
 
 const router = useRouter()
 const bgCanvas = ref(null)
@@ -120,6 +123,10 @@ const stats = ref([
 
 const navigateToTool = (path) => {
   router.push(path)
+}
+
+const scrollToFeatures = () => {
+  document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })
 }
 
 // 初始化3D背景
@@ -163,7 +170,7 @@ const init3DBackground = () => {
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3))
   
   const material = new THREE.PointsMaterial({
-    color: 0x00ff88,
+    color: 0x00d4ff,
     size: 0.5,
     transparent: true,
     opacity: 0.8,

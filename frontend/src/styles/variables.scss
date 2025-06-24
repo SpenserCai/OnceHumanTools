@@ -1,17 +1,17 @@
-// 主题色彩
-$primary-color: #00ff88;
-$secondary-color: #00ccff;
-$accent-color: #ff00ff;
+// 主题色彩 - 科幻蓝全息风格
+$primary-color: #00d4ff;
+$secondary-color: #0099cc;
+$accent-color: #66ddff;
 $warning-color: #ffaa00;
 $danger-color: #ff0044;
-$success-color: #00ff88;
+$success-color: #00ffaa;
 
 // 背景色
-$bg-primary: #000000;
-$bg-secondary: #0a0a0a;
-$bg-tertiary: #111111;
-$bg-card: rgba(15, 15, 15, 0.8);
-$bg-hover: rgba(0, 255, 136, 0.1);
+$bg-primary: #000510;
+$bg-secondary: #001122;
+$bg-tertiary: #002244;
+$bg-card: rgba(0, 33, 66, 0.8);
+$bg-hover: rgba(0, 212, 255, 0.1);
 
 // 文字色彩
 $text-primary: #ffffff;
@@ -20,14 +20,21 @@ $text-muted: #888888;
 $text-highlight: $primary-color;
 
 // 边框
-$border-color: rgba(0, 255, 136, 0.3);
-$border-hover: rgba(0, 255, 136, 0.6);
+$border-color: rgba(0, 212, 255, 0.3);
+$border-hover: rgba(0, 212, 255, 0.6);
 
 // 阴影
-$shadow-sm: 0 2px 4px rgba(0, 255, 136, 0.1);
-$shadow-md: 0 4px 8px rgba(0, 255, 136, 0.2);
-$shadow-lg: 0 8px 16px rgba(0, 255, 136, 0.3);
-$shadow-glow: 0 0 20px rgba(0, 255, 136, 0.5);
+$shadow-sm: 0 2px 4px rgba(0, 212, 255, 0.1);
+$shadow-md: 0 4px 8px rgba(0, 212, 255, 0.2);
+$shadow-lg: 0 8px 16px rgba(0, 212, 255, 0.3);
+$shadow-glow: 0 0 20px rgba(0, 212, 255, 0.5);
+
+// 全息效果
+$hologram-primary: linear-gradient(45deg, #00d4ff, #66ddff, #00d4ff);
+$hologram-secondary: linear-gradient(135deg, #0099cc, #00d4ff, #0099cc);
+$hologram-border: linear-gradient(90deg, transparent, #00d4ff, transparent);
+$hologram-glow: 0 0 30px rgba(0, 212, 255, 0.4), 0 0 60px rgba(0, 212, 255, 0.2);
+$hologram-pulse: rgba(0, 212, 255, 0.8);
 
 // 动画时长
 $transition-fast: 0.2s;

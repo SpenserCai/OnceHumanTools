@@ -7,21 +7,18 @@
     
     <div class="tool-container">
       <!-- 输入区域 -->
-      <div class="input-section sci-fi-card">
-        <h2 class="section-title">参数设置</h2>
+      <HologramCard class="input-section" title="参数设置" variant="primary">
         
         <!-- 初始等级 -->
         <div class="form-group">
           <label class="form-label">初始等级</label>
           <div class="level-inputs">
-            <el-input-number
+            <HologramInputNumber
               v-for="(level, index) in initialLevels"
               :key="`initial-${index}`"
               v-model="initialLevels[index]"
               :min="1"
               :max="5"
-              :precision="0"
-              controls-position="right"
             />
           </div>
         </div>
@@ -30,14 +27,12 @@
         <div class="form-group">
           <label class="form-label">目标等级</label>
           <div class="level-inputs">
-            <el-input-number
+            <HologramInputNumber
               v-for="(level, index) in targetLevels"
               :key="`target-${index}`"
               v-model="targetLevels[index]"
               :min="initialLevels[index]"
               :max="5"
-              :precision="0"
-              controls-position="right"
             />
           </div>
         </div>
@@ -45,43 +40,42 @@
         <!-- 判断模式 -->
         <div class="form-group">
           <label class="form-label">判断模式</label>
-          <el-radio-group v-model="orderIndependent">
-            <el-radio :label="true">顺序无关（推荐）</el-radio>
-            <el-radio :label="false">位置对应</el-radio>
-          </el-radio-group>
+          <HologramRadioGroup 
+            v-model="orderIndependent"
+            :options="[
+              { label: '顺序无关（推荐）', value: true },
+              { label: '位置对应', value: false }
+            ]"
+          />
         </div>
         
         <!-- 显示选项 -->
         <div class="form-group">
-          <el-checkbox v-model="showPaths">
+          <HologramCheckbox v-model="showPaths">
             显示强化路径（数量较多时可能影响性能）
-          </el-checkbox>
+          </HologramCheckbox>
         </div>
         
         <!-- 预设方案 -->
         <div class="form-group">
           <label class="form-label">快速预设</label>
           <div class="preset-buttons">
-            <el-button @click="applyPreset('allOne')">全1级</el-button>
-            <el-button @click="applyPreset('balanced')">平衡型</el-button>
-            <el-button @click="applyPreset('focused')">集中型</el-button>
+            <HologramButton variant="outline" @click="applyPreset('allOne')">全1级</HologramButton>
+            <HologramButton variant="outline" @click="applyPreset('balanced')">平衡型</HologramButton>
+            <HologramButton variant="outline" @click="applyPreset('focused')">集中型</HologramButton>
           </div>
         </div>
         
         <!-- 计算按钮 -->
         <div class="form-actions">
-          <button 
-            class="sci-fi-btn"
-            @click="calculate"
-          >
+          <HologramButton variant="primary" @click="calculate">
             开始计算
-          </button>
+          </HologramButton>
         </div>
-      </div>
+      </HologramCard>
       
       <!-- 结果区域 -->
-      <div v-if="result" class="result-section sci-fi-card fade-in">
-        <h2 class="section-title">计算结果</h2>
+      <HologramCard v-if="result" class="result-section fade-in" title="计算结果" variant="secondary">
         
         <!-- 概率显示 -->
         <div class="probability-display">
@@ -93,13 +87,13 @@
         
         <!-- 提示信息 -->
         <div class="probability-hint">
-          <el-tag 
+          <HologramTag 
             :type="getProbabilityTagType()"
-            effect="plain"
             size="large"
+            glow
           >
             {{ getProbabilityHint() }}
-          </el-tag>
+          </HologramTag>
         </div>
         
         <!-- 详细数据 -->
@@ -147,7 +141,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </HologramCard>
     </div>
   </div>
 </template>
@@ -156,6 +150,14 @@
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import api from '@/api'
+import { 
+  HologramCard, 
+  HologramInputNumber, 
+  HologramButton, 
+  HologramCheckbox, 
+  HologramRadioGroup, 
+  HologramTag 
+} from '@/components'
 
 // 数据状态
 const initialLevels = ref([1, 1, 1, 1])
@@ -232,7 +234,7 @@ const getProbabilityTagType = () => {
   if (!result.value) return 'info'
   const percent = result.value.probabilityPercent
   if (percent >= 75) return 'success'
-  if (percent >= 50) return ''
+  if (percent >= 50) return 'default'
   if (percent >= 25) return 'warning'
   return 'danger'
 }
@@ -276,12 +278,7 @@ const getProbabilityTagType = () => {
     }
   }
   
-  .section-title {
-    font-family: $font-tech;
-    font-size: 1.5rem;
-    margin-bottom: $spacing-lg;
-    color: $primary-color;
-  }
+
   
   .form-group {
     margin-bottom: $spacing-lg;
@@ -298,10 +295,6 @@ const getProbabilityTagType = () => {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: $spacing-sm;
-    
-    :deep(.el-input-number) {
-      width: 100%;
-    }
   }
   
   .preset-buttons {
@@ -361,9 +354,15 @@ const getProbabilityTagType = () => {
         display: flex;
         justify-content: space-between;
         padding: $spacing-md;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid $border-color;
+        background: rgba(0, 33, 66, 0.6);
+        border: 1px solid rgba(0, 212, 255, 0.3);
         border-radius: $radius-sm;
+        transition: all $transition-normal;
+        
+        &:hover {
+          border-color: rgba(0, 212, 255, 0.6);
+          box-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
+        }
         
         .stat-label {
           color: $text-secondary;
@@ -390,9 +389,15 @@ const getProbabilityTagType = () => {
         max-height: 300px;
         overflow-y: auto;
         padding: $spacing-md;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid $border-color;
+        background: rgba(0, 33, 66, 0.6);
+        border: 1px solid rgba(0, 212, 255, 0.3);
         border-radius: $radius-md;
+        
+        // 隐藏滚动条
+        &::-webkit-scrollbar {
+          width: 0px;
+          display: none;
+        }
         
         .path-item {
           display: flex;
@@ -401,9 +406,15 @@ const getProbabilityTagType = () => {
           margin-bottom: $spacing-sm;
           font-family: $font-tech;
           font-size: 0.9rem;
+          border-radius: $radius-sm;
+          transition: background $transition-normal;
+          
+          &:hover {
+            background: rgba(0, 212, 255, 0.1);
+          }
           
           &.success {
-            color: $success-color;
+            color: #00ffaa;
           }
           
           .path-index {
@@ -429,8 +440,8 @@ const getProbabilityTagType = () => {
       
       .bar-chart {
         height: 60px;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid $border-color;
+        background: rgba(0, 33, 66, 0.6);
+        border: 1px solid rgba(0, 212, 255, 0.3);
         border-radius: $radius-sm;
         overflow: hidden;
         display: flex;
@@ -445,11 +456,11 @@ const getProbabilityTagType = () => {
           transition: width $transition-slow ease-out;
           
           &.success-bar {
-            background: linear-gradient(90deg, $success-color, color.scale($success-color, $lightness: 10%));
+            background: linear-gradient(90deg, #00ffaa, #44ffbb);
           }
           
           &.fail-bar {
-            background: linear-gradient(90deg, $danger-color, color.scale($danger-color, $lightness: 10%));
+            background: linear-gradient(90deg, #ff6b6b, #ff8888);
           }
         }
       }
@@ -457,30 +468,5 @@ const getProbabilityTagType = () => {
   }
 }
 
-// Element Plus 样式覆盖
-:deep(.el-input-number) {
-  .el-input__inner {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: $border-color;
-    color: $text-primary;
-    text-align: center;
-    
-    &:focus {
-      border-color: $primary-color;
-    }
-  }
-}
 
-:deep(.el-radio) {
-  .el-radio__label {
-    color: $text-primary;
-  }
-  
-  .el-radio__input.is-checked {
-    .el-radio__inner {
-      background: $primary-color;
-      border-color: $primary-color;
-    }
-  }
-}
 </style>

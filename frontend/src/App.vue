@@ -32,10 +32,10 @@ const particlesOptions = {
   fpsLimit: 120,
   particles: {
     color: {
-      value: '#00ff88'
+      value: '#00d4ff'
     },
     links: {
-      color: '#00ff88',
+      color: '#00d4ff',
       distance: 150,
       enable: true,
       opacity: 0.2,
@@ -112,7 +112,7 @@ body {
   position: fixed;
   width: 100px;
   height: 100px;
-  border: 2px solid #00ff88;
+  border: 2px solid #00d4ff;
   z-index: 20;
   pointer-events: none;
   
@@ -120,7 +120,7 @@ body {
   &::after {
     content: '';
     position: absolute;
-    background: #00ff88;
+    background: #00d4ff;
   }
   
   &.top-left {
@@ -219,22 +219,15 @@ body {
   opacity: 0;
 }
 
-// 滚动条样式
+// 隐藏默认滚动条
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 0px;
+  height: 0px;
+  display: none;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.5);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #00ff88;
-  border-radius: 4px;
-  
-  &:hover {
-    background: #00cc66;
-  }
+// 为 Firefox 隐藏滚动条
+html {
+  scrollbar-width: none;
 }
 </style>
