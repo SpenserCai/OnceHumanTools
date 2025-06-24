@@ -22,7 +22,9 @@ export default defineConfig({
       }
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver({
+        importStyle: "sass"
+      })],
     }),
   ],
   resolve: {
@@ -43,13 +45,24 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'element-plus': ['element-plus'],
-          'chart': ['chart.js', 'vue-chartjs'],
-          'three': ['three'],
-          'vendor': ['vue', 'vue-router', 'pinia', 'axios']
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('element-plus')) {
+              return 'element-plus'
+            }
+            if (id.includes('chart.js') || id.includes('vue-chartjs')) {
+              return 'chart'
+            }
+            if (id.includes('three')) {
+              return 'three'
+            }
+            if (id.includes('vue') || id.includes('pinia') || id.includes('axios')) {
+              return 'vendor'
+            }
+          }
         }
       }
     }
@@ -60,5 +73,8 @@ export default defineConfig({
         additionalData: `@use "@/styles/variables.scss" as *;`
       }
     }
+  },
+  optimizeDeps: {
+    include: ['vue', 'vue-router', 'pinia', 'axios', 'element-plus']
   }
 })
